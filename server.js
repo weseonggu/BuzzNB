@@ -10,7 +10,25 @@ const schema = new GraphQLSchema({
 
 const app = express();
 
-app.use('/graphql', graphqlHTTP({ schema, graphiql: true }));
+// GraphQL 에러 포맷팅 함수
+const customFormatErrorFn = (error) => {
+  const originalError = error.originalError;
+  
+  return {
+    message: originalError?.message || error.message,
+    path: error.path,
+    extensions: {
+      code: originalError?.code || 'INTERNAL_SERVER_ERROR',
+      timestamp: new Date().toISOString()
+    }
+  };
+};
+
+app.use('/graphql', graphqlHTTP({ 
+  schema, 
+  graphiql: true,
+  customFormatErrorFn
+}));
 
 const PORT = 5110;
 app.listen(PORT, () => {

@@ -1,14 +1,21 @@
 const exchangeRepository = require('../repositories/exchangeRepository');
+const ExchangeValidator = require('../validators/exchangeValidator');
 
 class ExchangeService {
   getExchangeInfo(src, tgt) {
-    return exchangeRepository.findBySrcAndTgt(src, tgt);
+    const validatedSrc = ExchangeValidator.validateCurrency(src);
+    const validatedTgt = ExchangeValidator.validateCurrency(tgt);
+    return exchangeRepository.findBySrcAndTgt(validatedSrc, validatedTgt);
   }
+
   updateExchangeRate(info) {
-    return exchangeRepository.updateExchangeRate(info);
+    const validatedInfo = ExchangeValidator.validateExchangeInfo(info);
+    return exchangeRepository.updateExchangeRate(validatedInfo);
   }
+
   deleteExchangeRate(info) {
-    return exchangeRepository.deleteExchangeRate(info);
+    const validatedInfo = ExchangeValidator.validateDeleteInfo(info);
+    return exchangeRepository.deleteExchangeRate(validatedInfo);
   }
 }
 
