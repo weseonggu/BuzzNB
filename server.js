@@ -1,3 +1,4 @@
+// server.js
 const express = require("express");
 const { graphqlHTTP } = require("express-graphql");
 const { GraphQLSchema } = require("graphql");
@@ -10,15 +11,21 @@ const schema = new GraphQLSchema({
 
 const app = express();
 
-// GraphQL 에러 포맷팅 함수
+// GraphQL 에러 포맷팅 함수 수정
 const customFormatErrorFn = (error) => {
   const originalError = error.originalError;
+  
+  // HTTP 상태 코드 설정
+  if (originalError?.status) {
+    error.status = originalError.status;
+  }
   
   return {
     message: originalError?.message || error.message,
     path: error.path,
     extensions: {
       code: originalError?.code || 'INTERNAL_SERVER_ERROR',
+      status: originalError?.status || 500,
       timestamp: new Date().toISOString()
     }
   };

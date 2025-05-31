@@ -1,9 +1,19 @@
+// 커스텀 에러 클래스 추가
+class ValidationError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'ValidationError';
+    this.code = 'BAD_REQUEST';
+    this.status = 400;
+  }
+}
+
 class ExchangeValidator {
     static validateCurrency(currency) {
       const validCurrencies = ['usd', 'krw']; // 유효한 통화 목록
       
       if (!validCurrencies.includes(currency)) {
-        throw new Error(`입력하신 통화는 ${currency} 지원 하지 않습니다.`);
+        throw new ValidationError(`입력하신 통화는 ${currency} 지원 하지 않습니다.`);
       }
       
       return currency;
@@ -11,7 +21,7 @@ class ExchangeValidator {
   
     static validateRate(rate) {
       if (rate <= 0) {
-        throw new Error('환율은 0보다 커야합니다.');
+        throw new ValidationError('Exchange rate must be greater than 0');
       }
       return rate;
     }
@@ -19,18 +29,18 @@ class ExchangeValidator {
     static validateDate(date) {
       const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
       if (!dateRegex.test(date)) {
-        throw new Error('YYYY-MM-DD 형식으로 작성해주세요');
+        throw new ValidationError('YYYY-MM-DD 형식으로 작성해주세요');
       }
   
       const inputDate = new Date(date);
       const today = new Date();
       
       if (isNaN(inputDate.getTime())) {
-        throw new Error('유효하지 않은 날짜입니다.');
+        throw new ValidationError('유효하지 않은 날짜입니다.');
       }
   
       if (inputDate > today) {
-        throw new Error('미래의 날짜는 입력할 수 없습니다.');
+        throw new ValidationError('미래의 날짜는 입력할 수 없습니다.');
       }
   
       return date;
