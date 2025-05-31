@@ -29,7 +29,11 @@ const exchange_rates_schema = new mongoose.Schema({
 });
 
 // 복합 인덱스 추가 (조회 성능 향상)
+// 1. 기본 복합 인덱스 (중복 방지)
 exchange_rates_schema.index({ src: 1, tgt: 1, date: 1 }, { unique: true });
+
+// 2. 최근 날짜 조회를 위한 인덱스
+exchange_rates_schema.index({ src: 1, tgt: 1, date: -1 });
 
 const ExchangeRate = mongoose.model('ExchangeRate', exchange_rates_schema);
 

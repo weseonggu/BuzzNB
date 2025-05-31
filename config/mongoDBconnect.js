@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 require('dotenv').config();  // .env 파일 로드
-
+/**
+ * DB 연결
+ */
 const dbConnect = async () => {
     try {
         // .env 파일에서 DB_CONNECT 변수 가져오기
