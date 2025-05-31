@@ -1,8 +1,10 @@
 const exchangeInfo = [
-    { src: "USD", tgt: "KRW", rate: 1380.30, date: "2025-05-30" },
-    { src: "USD", tgt: "KRW", rate: 1371.41, date: "2025-05-29" },
-    { src: "KRW", tgt: "USD", rate: 0.00072, date: "2025-05-30" },
-    { src: "KRW", tgt: "USD", rate: 0.00072, date: "2025-05-29" },
+    { src: "usd", tgt: "krw", rate: 1380.30, date: "2025-05-30" },
+    { src: "usd", tgt: "krw", rate: 1371.41, date: "2025-05-29" },
+    { src: "usd", tgt: "usd", rate: 1, date: "2025-05-30" },
+    { src: "usd", tgt: "usd", rate: 1, date: "2025-05-29" },
+    { src: "krw", tgt: "krw", rate: 1, date: "2025-05-29" },
+    { src: "krw", tgt: "usd", rate: 0.000721, date: "2025-05-29" }
   ];
   
   class ExchangeRepository {
@@ -11,13 +13,14 @@ const exchangeInfo = [
         (item) => item.src === src && item.tgt === tgt
       );
     }
+
     updateExchangeRate(info) {
         const { src, tgt, rate, date } = info;
         const today = new Date().toISOString().split('T')[0];
         
         const newInfo = {
-          src: src.toUpperCase(),
-          tgt: tgt.toUpperCase(),
+          src: src,
+          tgt: tgt,
           rate,
           date: date || today
         };
@@ -36,6 +39,23 @@ const exchangeInfo = [
         }
     
         return newInfo;
+    }
+
+    deleteExchangeRate(info) {
+      const { src, tgt, date } = info;
+      const index = exchangeInfo.findIndex(
+        item => item.src === src && 
+                item.tgt === tgt && 
+                item.date === date
+      );
+
+      if (index === -1) {
+        throw new Error('Exchange rate not found');
+      }
+
+      const deletedItem = exchangeInfo[index];
+      exchangeInfo.splice(index, 1);
+      return deletedItem;
     }
   }
   

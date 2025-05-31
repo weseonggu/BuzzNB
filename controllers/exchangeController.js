@@ -1,6 +1,10 @@
 const { GraphQLObjectType, GraphQLList, GraphQLNonNull, GraphQLString } = require('graphql');
 const exchangeService = require('../services/exchangeService');
-const { ExchangeInfoType, InputUpdateExchangeInfo } = require('../types/exchangeType');
+const { 
+  ExchangeInfoType, 
+  InputUpdateExchangeInfo,
+  InputDeleteExchangeInfo 
+} = require('../types/exchangeType');
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQuery',
@@ -28,6 +32,15 @@ const Mutation = new GraphQLObjectType({
       },
       resolve: (parent, args) => {
         return exchangeService.updateExchangeRate(args.info);
+      }
+    },
+    deleteExchangeRate: {
+      type: ExchangeInfoType,
+      args: {
+        info: { type: InputDeleteExchangeInfo }
+      },
+      resolve: (parent, args) => {
+        return exchangeService.deleteExchangeRate(args.info);
       }
     }
   }

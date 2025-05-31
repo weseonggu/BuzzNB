@@ -20,4 +20,18 @@ const InputUpdateExchangeInfo = new GraphQLInputObjectType({
     },
   });
 
-module.exports = { ExchangeInfoType, InputUpdateExchangeInfo };
+// 삭제용 Input 타입 추가
+const InputDeleteExchangeInfo = new GraphQLInputObjectType({
+  name: 'InputDeleteExchangeInfo',
+  fields: {
+    src: { type: new GraphQLNonNull(GraphQLString) },
+    tgt: { type: new GraphQLNonNull(GraphQLString) },
+    date: { type: new GraphQLNonNull(GraphQLString) },
+  },
+});
+
+module.exports = { 
+  ExchangeInfoType, 
+  InputUpdateExchangeInfo,
+  InputDeleteExchangeInfo 
+};
