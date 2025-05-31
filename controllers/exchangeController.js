@@ -15,8 +15,8 @@ const RootQuery = new GraphQLObjectType({
         src: { type: new GraphQLNonNull(GraphQLString) },
         tgt: { type: new GraphQLNonNull(GraphQLString) },
       },
-      resolve: (parent, args) => {
-        return exchangeService.getExchangeInfo(args.src, args.tgt);
+      resolve: async (parent, args) => {
+        return await exchangeService.getExchangeInfo(args.src, args.tgt);
       },
     },
   },
@@ -30,8 +30,8 @@ const Mutation = new GraphQLObjectType({
       args: {
         info: { type: InputUpdateExchangeInfo }
       },
-      resolve: (parent, args) => {
-        return exchangeService.updateExchangeRate(args.info);
+      resolve: async (parent, args) => {
+        return await exchangeService.updateExchangeRate(args.info);
       }
     },
     deleteExchangeRate: {
@@ -39,8 +39,8 @@ const Mutation = new GraphQLObjectType({
       args: {
         info: { type: InputDeleteExchangeInfo }
       },
-      resolve: (parent, args) => {
-        return exchangeService.deleteExchangeRate(args.info);
+      resolve: async (parent, args) => {
+        return await exchangeService.deleteExchangeRate(args.info);
       }
     }
   }

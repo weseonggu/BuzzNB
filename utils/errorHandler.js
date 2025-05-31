@@ -66,7 +66,11 @@ const getErrorType = (error) => {
   return ErrorTypes.INTERNAL;
 };
 
-// GraphQL 에러 포맷팅 함수
+/**
+ * GraphQL 에러 포맷팅 함수
+ * @param {*} error 
+ * @returns error
+ */
 const formatGraphQLError = (error) => {
   const errorType = getErrorType(error);
   const originalError = error.originalError;
