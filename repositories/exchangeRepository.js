@@ -2,10 +2,24 @@ const ExchangeRate = require('../schema/exchangeRate');
 
   
 class ExchangeRepository {
+
+    /**
+     * 정보 DB조회
+     * @param {*} src 대상 원화 정보
+     * @param {*} tgt 목표 원화 정보
+     * @returns 최근 날짜의 환율 데이터
+     */
     async findBySrcAndTgt(src, tgt) {
-        return await ExchangeRate.find({ src, tgt });
+        return await ExchangeRate.findOne({ src, tgt })
+            .sort({ date: -1 })  // 날짜 내림차순 정렬
+            .limit(1);          // 첫 번째 결과만 반환
     }
 
+    /**
+     * 데이터 업데이트: 없으면 추가 있으면 변경
+     * @param {*} info 환율 정보 객체
+     * @returns 변경된 데이터
+     */
     async updateExchangeRate(info) {
         const { src, tgt, rate, date } = info;
         const today = new Date().toISOString().split('T')[0];
@@ -40,6 +54,11 @@ class ExchangeRepository {
         }
     }
 
+    /**
+     * 데이터 삭제
+     * @param {*} info 환율 정보 객체
+     * @returns 삭제된 환율 정보
+     */
     async deleteExchangeRate(info) {
         const { src, tgt, date } = info;
         

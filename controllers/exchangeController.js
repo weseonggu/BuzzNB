@@ -6,11 +6,14 @@ const {
   InputDeleteExchangeInfo 
 } = require('../types/exchangeType');
 
+/**
+ * 환율 정보 조회
+ */
 const RootQuery = new GraphQLObjectType({
   name: 'RootQuery',
   fields: {
     getExchangeRate: {
-      type: new GraphQLList(ExchangeInfoType),
+      type: ExchangeInfoType,
       args: {
         src: { type: new GraphQLNonNull(GraphQLString) },
         tgt: { type: new GraphQLNonNull(GraphQLString) },
@@ -22,6 +25,9 @@ const RootQuery = new GraphQLObjectType({
   },
 });
 
+/**
+ * 환율 정보 업데이트, 삭제
+ */
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
