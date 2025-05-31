@@ -3,6 +3,7 @@ const express = require("express");
 const { graphqlHTTP } = require("express-graphql");
 const { GraphQLSchema } = require("graphql");
 const { query, mutation } = require('./controllers/exchangeController');
+const dbConnect = require('./config/mongoDBconnect');
 
 const schema = new GraphQLSchema({
   query,
@@ -30,6 +31,8 @@ const customFormatErrorFn = (error) => {
     }
   };
 };
+
+dbConnect();
 
 app.use('/graphql', graphqlHTTP({ 
   schema, 
