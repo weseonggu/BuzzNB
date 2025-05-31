@@ -1,5 +1,6 @@
 const { GraphQLObjectType, GraphQLString, GraphQLFloat, GraphQLNonNull, GraphQLInputObjectType } = require('graphql');
 
+// 조회용
 const ExchangeInfoType = new GraphQLObjectType({
   name: 'ExchangeInfo',
   fields: () => ({
@@ -10,6 +11,7 @@ const ExchangeInfoType = new GraphQLObjectType({
   }),
 });
 
+// 업데이트용 
 const InputUpdateExchangeInfo = new GraphQLInputObjectType({
     name: 'InputUpdateExchangeInfo',
     fields: {
@@ -20,7 +22,7 @@ const InputUpdateExchangeInfo = new GraphQLInputObjectType({
     },
   });
 
-// 삭제용 Input 타입 추가
+// 삭제용
 const InputDeleteExchangeInfo = new GraphQLInputObjectType({
   name: 'InputDeleteExchangeInfo',
   fields: {

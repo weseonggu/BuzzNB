@@ -1,62 +1,60 @@
-const exchangeInfo = [
-    { src: "usd", tgt: "krw", rate: 1380.30, date: "2025-05-30" },
-    { src: "usd", tgt: "krw", rate: 1371.41, date: "2025-05-29" },
-    { src: "usd", tgt: "usd", rate: 1, date: "2025-05-30" },
-    { src: "usd", tgt: "usd", rate: 1, date: "2025-05-29" },
-    { src: "krw", tgt: "krw", rate: 1, date: "2025-05-29" },
-    { src: "krw", tgt: "usd", rate: 0.000721, date: "2025-05-29" }
-  ];
+const ExchangeRate = require('../schema/exchangeRate');
+
   
-  class ExchangeRepository {
-    findBySrcAndTgt(src, tgt) {
-      return exchangeInfo.filter(
-        (item) => item.src === src && item.tgt === tgt
-      );
+class ExchangeRepository {
+    async findBySrcAndTgt(src, tgt) {
+        return await ExchangeRate.find({ src, tgt });
     }
 
-    updateExchangeRate(info) {
+    async updateExchangeRate(info) {
         const { src, tgt, rate, date } = info;
         const today = new Date().toISOString().split('T')[0];
         
-        const newInfo = {
-          src: src,
-          tgt: tgt,
-          rate,
-          date: date || today
-        };
-    
-        // 기존 데이터가 있으면 업데이트, 없으면 추가
-        const index = exchangeInfo.findIndex(
-          item => item.src === newInfo.src && 
-                  item.tgt === newInfo.tgt && 
-                  item.date === newInfo.date
+        try {
+        // findOneAndUpdate를 사용하여 upsert 수행
+        const result = await ExchangeRate.findOneAndUpdate(
+            // 검색 조건
+            { 
+            src: src, 
+            tgt: tgt, 
+            date: date || today 
+            },
+            // 업데이트할 데이터
+            { 
+            rate: rate 
+            },
+            // 옵션
+            { 
+            new: true,           // 업데이트된 문서 반환
+            upsert: true,        // 문서가 없으면 생성
+            runValidators: true  // 스키마 유효성 검사 실행
+            }
         );
-    
-        if (index !== -1) {
-          exchangeInfo[index] = newInfo;
-        } else {
-          exchangeInfo.push(newInfo);
+
+        return result;
+        } catch (error) {
+        if (error.code === 11000) {
+            throw new Error('중복된 환율 정보 입니다.');
         }
-    
-        return newInfo;
+        throw error;
+        }
     }
 
-    deleteExchangeRate(info) {
-      const { src, tgt, date } = info;
-      const index = exchangeInfo.findIndex(
-        item => item.src === src && 
-                item.tgt === tgt && 
-                item.date === date
-      );
+    async deleteExchangeRate(info) {
+        const { src, tgt, date } = info;
+        
+        const result = await ExchangeRate.findOneAndDelete({
+        src: src,
+        tgt: tgt,
+        date
+        });
 
-      if (index === -1) {
-        throw new Error('Exchange rate not found');
-      }
+        if (!result) {
+        throw new Error('환율을 못찾았습니다.');
+        }
 
-      const deletedItem = exchangeInfo[index];
-      exchangeInfo.splice(index, 1);
-      return deletedItem;
+        return result;
     }
-  }
+}
   
   module.exports = new ExchangeRepository();
