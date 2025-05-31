@@ -57,8 +57,8 @@ class DBWorkError extends CustomError {
 const getErrorType = (error) => {
   const message = error.message.toLowerCase();
   
-  for (const [type, patterns] of Object.entries(ErrorPatterns)) {
-    if (patterns.some(pattern => message.includes(pattern.toLowerCase()))) {
+  for (const [type, patterns] of Object.entries(ErrorPatterns)) { // 패턴 찾기
+    if (patterns.some(pattern => message.includes(pattern.toLowerCase()))) {// 에러 메세지에 패턴이 있는지 확인
       return type;
     }
   }

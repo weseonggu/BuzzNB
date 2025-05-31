@@ -10,7 +10,7 @@ class ExchangeService {
      * @returns 환율 정보
      */
     async getExchangeInfo(src, tgt) {
-        const { src: validatedSrc, tgt: validatedTgt } = ExchangeValidator.validateSrcAndTgt(src, tgt);
+        const { src: validatedSrc, tgt: validatedTgt } = ExchangeValidator.validateSrcAndTgt(src, tgt);// 유효성 검증
         return await exchangeRepository.findBySrcAndTgt(validatedSrc, validatedTgt);
     }
 
@@ -20,7 +20,7 @@ class ExchangeService {
      * @returns 변경된 환율 정보
      */
     async updateExchangeRate(info) {
-        const validatedInfo = ExchangeValidator.validateExchangeInfo(info);
+        const validatedInfo = ExchangeValidator.validateExchangeInfo(info);// 유효성 검증
         return await exchangeRepository.updateExchangeRate(validatedInfo);
     }
 
@@ -30,7 +30,7 @@ class ExchangeService {
      * @returns 삭제된 환율
      */
     async deleteExchangeRate(info) {
-        const validatedInfo = ExchangeValidator.validateDeleteInfo(info);
+        const validatedInfo = ExchangeValidator.validateDeleteInfo(info);// 유효성 검증
         return await exchangeRepository.deleteExchangeRate(validatedInfo);
     }
 }

@@ -31,7 +31,7 @@ const RootQuery = new GraphQLObjectType({
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
-    postExchangeRate: {
+    postExchangeRate: {// 업데이트
       type: ExchangeInfoType,
       args: {
         info: { type: InputUpdateExchangeInfo }
@@ -40,7 +40,7 @@ const Mutation = new GraphQLObjectType({
         return await exchangeService.updateExchangeRate(args.info);
       }
     },
-    deleteExchangeRate: {
+    deleteExchangeRate: {// 삭제
       type: ExchangeInfoType,
       args: {
         info: { type: InputDeleteExchangeInfo }
