@@ -8,7 +8,7 @@ const ErrorTypes = {
 
 // 에러 메시지 패턴
 const ErrorPatterns = {
-  [ErrorTypes.VALIDATION]: ['required type', 'Field'],
+  [ErrorTypes.VALIDATION]: ['required type', 'Field', 'Expected', 'found'],
   [ErrorTypes.NOT_FOUND]: ['not found', 'does not exist'],
   [ErrorTypes.DB]: ['database', 'mongodb']
 };
@@ -57,8 +57,8 @@ class DBWorkError extends CustomError {
 const getErrorType = (error) => {
   const message = error.message.toLowerCase();
   
-  for (const [type, patterns] of Object.entries(ErrorPatterns)) { // 패턴 찾기
-    if (patterns.some(pattern => message.includes(pattern.toLowerCase()))) {// 에러 메세지에 패턴이 있는지 확인
+  for (const [type, patterns] of Object.entries(ErrorPatterns)) {
+    if (patterns.some(pattern => message.includes(pattern.toLowerCase()))) {
       return type;
     }
   }
@@ -83,6 +83,20 @@ const formatGraphQLError = (error) => {
       extensions: {
         code: originalError.code,
         status: originalError.status,
+        timestamp: new Date().toISOString()
+      }
+    };
+  }
+
+  // GraphQLNonNull 에러 처리
+  if (error.message.includes('Expected') && error.message.includes('found')) {
+    const fieldName = error.path ? error.path[error.path.length - 1] : '필드';
+    return {
+      message: `${fieldName}는 필수 입력값입니다.`,
+      path: error.path,
+      extensions: {
+        code: ErrorCodes[ErrorTypes.VALIDATION],
+        status: ErrorStatusCodes[ErrorTypes.VALIDATION],
         timestamp: new Date().toISOString()
       }
     };
