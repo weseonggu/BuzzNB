@@ -68,7 +68,7 @@ GraphQL Playground를 통해 API를 테스트할 수 있습니다:
 - Node.js
 - Express
 - GraphQL
-- MongoDB
+- MongoDB Atlas
 - Mongoose
 
 ## 주의사항
