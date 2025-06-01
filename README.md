@@ -6,7 +6,7 @@
 
 - Node.js v22.16.0
 - npm v10.8.0
-
+> 권장: [`nvm`](https://github.com/coreybutler/nvm-windows/releases) 사용을 통해 버전을 맞추세요(윈도우)
 ## 설치 및 실행 방법
 
 1. 저장소 클론
@@ -19,10 +19,20 @@ cd [project-directory]
 2. 의존성 패키지 설치
 
 ```bash
-npm install -y
+npm install
+```
+3. 노드 버전 설정
+```
+# 설치되어 있는 노드 버전 리스트
+nvm ls
+# 22.16.0 버전이 미설치 시 아래 명령어 실행
+nvm install 22.16.0 
+# 윈도우 기준 관리자 권한으로 cmd실행
+nvm use 22.16.0 
+
 ```
 
-3. 환경 설정
+4. 환경 설정
 
 ```bash
 # .env.sample 파일수정 후 .env로 파일 변경 [필수]
@@ -35,7 +45,7 @@ DB_CONNECT=mongodb+srv://[username]:[password]@[cluster-url]/[database-name]
 
 - `DB_CONNECT`: MongoDB 연결 문자열 (이메일에 있는 DB 접속 키를 사용)
 
-4. 서버 실행
+5. 서버 실행
 
 ```bash
 node server.js
