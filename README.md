@@ -19,7 +19,7 @@ cd [project-directory]
 2. 의존성 패키지 설치
 
 ```bash
-npm install -y
+npm install
 ```
 
 3. 환경 설정
