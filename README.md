@@ -6,7 +6,7 @@
 
 - Node.js v22.16.0
 - npm v10.8.0
-> 권장: [`nvm`](https://github.com/coreybutler/nvm-windows/releases) 사용을 통해 버전을 맞추세요(윈도우)
+> 권장: [`nvm-windows`](https://github.com/coreybutler/nvm-windows/releases) 사용을 통해 버전을 맞추세요(윈도우)
 ## 설치 및 실행 방법
 
 1. 저장소 클론
