@@ -66,3 +66,5 @@ GraphQL Playground를 통해 API를 테스트할 수 있습니다:
 
 - `.env` 파일은 절대로 Git에 커밋하지 마세요
 - MongoDB 연결 문자열은 보안을 위해 안전하게 관리해야 합니다
+## 블로그 글
+[구현 과제 블로그 글](https://blog.naver.com/fkskdldh/223883457797)<br>
